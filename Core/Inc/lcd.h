@@ -34,8 +34,8 @@
 #include "stm32l4xx_hal_i2c.h"
 
 // Device I2C Adress
-#define LCD_ADDRESS     0x7c
-#define RGB_ADDRESS     0xc4
+#define LCD_ADDRESS    0x7c
+#define RGB_ADDRESS    0xc4
 
 
 

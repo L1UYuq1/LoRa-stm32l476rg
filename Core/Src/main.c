@@ -95,7 +95,10 @@ int main(void)
   /* USER CODE BEGIN 2 */
   lcd_init(&hi2c1,&lcdData);
 
-  clearlcd();
+  lcd_position(&hi2c1,0,0); // (&hi2c,row,colon)
+  lcd_print(&hi2c1,"Hello");
+  reglagecouleur(200,100,100);
+  HAL_Delay(1000);
 
 
   /* USER CODE END 2 */
@@ -105,17 +108,7 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-	  // LCD 上显示不断变化的计数
-	 lcd_position(&hi2c1, 0, 0);
-	 lcd_print(&hi2c1, "Hello STM32!");
 
-	 lcd_position(&hi2c1, 0, 1);
-	 char buffer[16];
-	 static int count = 0;
-	 snprintf(buffer, sizeof(buffer), "Count: %d", count++);
-	 lcd_print(&hi2c1, buffer);
-
-	 HAL_Delay(1000);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
