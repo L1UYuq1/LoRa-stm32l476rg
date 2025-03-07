@@ -117,7 +117,6 @@ int main(void)
 
 
   lcd_position(&hi2c1,0,1); // (&hi2c,row,colon)
-  lcd_print(&hi2c1,buffer);
 
 
 
