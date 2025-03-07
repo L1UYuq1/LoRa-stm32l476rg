@@ -1,0 +1,4 @@
+../Core/Src/loraE5.c:5:6:LoRaE5_Init	1
+../Core/Src/loraE5.c:11:6:LoRaE5_SendCommand	3
+../Core/Src/loraE5.c:31:6:LoRaE5_SendData	1
+../Core/Src/loraE5.c:38:6:LoRaE5_ReceiveData	1

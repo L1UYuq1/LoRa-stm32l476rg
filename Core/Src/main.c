@@ -26,6 +26,8 @@
 /* USER CODE BEGIN Includes */
 #include "lcd.h"
 #include "stdio.h"
+#include "loraE5.h"
+#include "string.h"
 
 /* USER CODE END Includes */
 
@@ -48,6 +50,7 @@
 
 /* USER CODE BEGIN PV */
 	static rgb_lcd lcdData;
+	static LoRaE5_t lora; //创建loraE5结构体
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -92,13 +95,35 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   MX_I2C1_Init();
+  MX_UART4_Init();
   /* USER CODE BEGIN 2 */
   lcd_init(&hi2c1,&lcdData);
+  // 初始化 LoRa-E5（绑定 UART2）
+  LoRaE5_Init(&lora, &huart4);
+
 
   lcd_position(&hi2c1,0,0); // (&hi2c,row,colon)
-  lcd_print(&hi2c1,"Hello");
-  reglagecouleur(200,100,100);
-  HAL_Delay(1000);
+
+  HAL_UART_Transmit(&huart4, (uint8_t *)"AT\r\n ", 4, 100);
+  char buffer[64] = {0};  // 存储 LoRa-E5 返回的数据
+
+  HAL_UART_Receive(&huart4, (uint8_t *)buffer, sizeof(buffer), 1000);
+
+  if (strstr(buffer, "OK") != NULL) {
+      lcd_print(&hi2c1, "LoRa-E5 OK");  // 在 LCD 显示 OK
+  } else {
+      lcd_print(&hi2c1, "LoRa-E5 ERROR");
+  }
+
+
+  lcd_position(&hi2c1,0,1); // (&hi2c,row,colon)
+  lcd_print(&hi2c1,buffer);
+
+
+
+
+
+  //reglagecouleur(100,100,100);
 
 
   /* USER CODE END 2 */
