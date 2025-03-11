@@ -62,6 +62,12 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+//串口打印
+void send_string(char *str) {
+    HAL_UART_Transmit(&huart2, (uint8_t*)str, strlen(str), HAL_MAX_DELAY);
+}
+
+
 /* USER CODE END 0 */
 
 /**
@@ -102,21 +108,9 @@ int main(void)
   LoRaE5_Init(&lora, &huart4);
 
 
-  lcd_position(&hi2c1,0,0); // (&hi2c,row,colon)
-
-  HAL_UART_Transmit(&huart4, (uint8_t *)"AT\r\n ", 4, 100);
-  char buffer[64] = {0};  // 存储 LoRa-E5 返回的数据
-
-  HAL_UART_Receive(&huart4, (uint8_t *)buffer, sizeof(buffer), 1000);
-
-  if (strstr(buffer, "OK") != NULL) {
-      lcd_print(&hi2c1, "LoRa-E5 OK");  // 在 LCD 显示 OK
-  } else {
-      lcd_print(&hi2c1, "LoRa-E5 ERROR");
-  }
 
 
-  lcd_position(&hi2c1,0,1); // (&hi2c,row,colon)
+
 
 
 
@@ -134,6 +128,17 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+	   lcd_position(&hi2c1,0,0); // (&hi2c,row,colon)
+	   // 1) 发送 AT 指令
+	   LoRaE5_SendData(&lora,"HelloKitty");
+	   char buffer[64] = {0};  // 存储 LoRa-E5 返回的数据
+	   HAL_UART_Receive(&huart4, (uint8_t *)buffer, sizeof(buffer), 1000);
+	   lcd_print(&hi2c1, buffer);
+	   send_string("buffer : ");
+	   send_string(buffer);
+
+
   }
   /* USER CODE END 3 */
 }
